@@ -22,6 +22,16 @@ public class Game
 
     public Point getAvailableStartPosition()
     {
-        return null;
+        for (ClientHandler clientHandler : clientHandlers)
+        {
+            bw.reset();
+            bw.addPoint(clientHandler.getPlayer().getPos());
+        }
+        return bw.getNextPointIfExists();
+    }
+
+    public int getFieldSize()
+    {
+        return fieldSize;
     }
 }

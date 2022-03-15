@@ -1,10 +1,14 @@
 package de.ngerber;
 
 import de.ngerber.game.Game;
+import de.ngerber.game.Player;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.stream.Collectors;
@@ -21,7 +25,6 @@ public class Server
         clientIds = new Stack<>();
         clientHandlers = new ArrayList<>();
         game = new Game(clientHandlers);
-
         acceptConnections(port, maxConnections);
     }
 
@@ -47,9 +50,47 @@ public class Server
         }
     }
 
+
+    public void updatePlayer(Player player)
+    {
+        try
+        {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
+            oos.writeObject(player);
+            oos.flush();
+            byte[] bytePlayerData = bos.toByteArray();
+
+            for (ClientHandler clientHandler : clientHandlers)
+            {
+                if (clientHandler.isRequestingAllPlayers())
+                {
+                    byte[] bytePlayer = ByteBuffer.allocate(bytePlayerData.length + 1)
+                            .put(new byte[]{0x00})
+                            .put(bytePlayerData)
+                            .array();
+                    clientHandler.addLenAndSendMessage(bytePlayer);
+                }
+                else if (clientHandler.getPlayer() == player)
+                {
+                    byte[] bytePlayer = ByteBuffer.allocate(bytePlayerData.length + 1)
+                            .put(new byte[]{0x00})
+                            .put(bytePlayerData)
+                            .array();
+                    clientHandler.addLenAndSendMessage(bytePlayer);
+                }
+            }
+
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+            System.out.println("Could not serialize Player");
+        }
+    }
+
     public void onDisconnect(ClientHandler clientHandler)
     {
-        clientIds.push(clientHandler.getId());
+        clientIds.push(clientHandler.getPlayer().getId());
         clientHandlers.remove(clientHandler);
     }
 

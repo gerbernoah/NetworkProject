@@ -3,12 +3,9 @@ package de.ngerber.gui;
 import de.ngerber.game.Game;
 import de.ngerber.game.Player;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
-public class GameScreen extends JLabel
+public class GameScreen extends Screen
 {
     private final GUI gui;
     private final Game game;
@@ -19,15 +16,6 @@ public class GameScreen extends JLabel
         this.gui = gui;
         this.game = gui.getGame();
         squareSize = this.getWidth() / game.getFieldSize();
-
-        this.addKeyListener(new KeyAdapter()
-        {
-            @Override
-            public void keyPressed(KeyEvent e)
-            {
-                
-            }
-        });
     }
 
     @Override
@@ -44,5 +32,11 @@ public class GameScreen extends JLabel
                     squareSize,
                     squareSize);
         }
+    }
+
+    @Override
+    public Screen getEscapeScreen()
+    {
+        return gui.getMenuScreen();
     }
 }

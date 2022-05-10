@@ -30,7 +30,7 @@ public class Field
      */
     public boolean addShip(int startPos, int endPos)
     {
-        Ship ship = new Ship(startPos, endPos);
+        Ship ship = new Ship(Math.min(startPos, endPos), Math.max(startPos, endPos));
         for (Integer position : ship.getPositions())
         {
             if (getShipPositions().contains(position))
@@ -40,16 +40,32 @@ public class Field
         return true;
     }
 
+    public int getAliveUnits(Ship ship)
+    {
+        int alive = 0;
+        for (Integer position : ship.getPositions())
+        {
+            if (!field[position])
+                alive++;
+        }
+        return alive;
+    }
+
+    public Ship getShipOn(int pos)
+    {
+        for (Ship ship : ships)
+        {
+            if (ship.contains(pos))
+                return ship;
+        }
+        return null;
+    }
+
     private ArrayList<Integer> getShipPositions()
     {
         ArrayList<Integer> positions = new ArrayList<>();
         for (Ship ship : ships)
-        {
-            for (int position : ship.getPositions())
-            {
-                positions.add(position);
-            }
-        }
+            positions.addAll(ship.getPositions());
         return positions;
     }
 
@@ -58,9 +74,9 @@ public class Field
         ships.clear();
     }
 
-    public boolean getUnit(int pos)
+    public ArrayList<Ship> getShips()
     {
-        return field[pos];
+        return ships;
     }
 
     public void setUnit(int pos, boolean shot)

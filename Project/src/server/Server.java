@@ -37,10 +37,16 @@ public class Server implements ServerObs
         }
     }
 
-    public void shot(int pos)
+    /**
+     * @param pClient the client from which the shot is from
+     * @param pos the position shot
+     */
+    public void shot(UtilClient pClient, int pos)
     {
         for (UtilClient client : clients)
         {
+            if (client == pClient)
+                continue;
             try
             {
                 client.getClient().shot(pos);

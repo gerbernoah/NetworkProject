@@ -23,7 +23,7 @@ public class Controller
         boolean ship = clField.shipContains(pos);
 
         clField.setUnit(pos, true);
-        server.shot(pos);
+        server.shot(client, pos);
         if (ship)
             client.getField().setUnit(pos, false);
         return ship;

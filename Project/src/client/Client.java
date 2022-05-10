@@ -58,7 +58,7 @@ public class Client implements ClientObs
     /**
      *
      * @param pos destination to shoot
-     * @return if shot was valid
+     * @return if shot was hit
      */
     public boolean shoot(int pos)
     {

@@ -41,6 +41,7 @@ public class Server implements ServerObs
     /**
      * @param pClient the client from which the shot is from
      * @param pos the position shot
+     * @param onTurn if the client is on Turn after shot
      */
     public void shot(UtilClient pClient, int pos, boolean onTurn)
     {
@@ -97,45 +98,6 @@ public class Server implements ServerObs
     public static void main(String[] args)
     {
         new Server();
-    }
-}
-
-class UtilClient
-{
-    private static int nextID = 0;
-    private final ClientObs client;
-    private final int id;
-    private final String name;
-    private final Field field;
-
-    public UtilClient(ClientObs clientObs, String name)
-    {
-        id = nextID;
-        nextID++;
-
-        this.client = clientObs;
-        this.name = name;
-        field = new Field();
-    }
-
-    public ClientObs getClient()
-    {
-        return client;
-    }
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public Field getField()
-    {
-        return field;
     }
 }
 

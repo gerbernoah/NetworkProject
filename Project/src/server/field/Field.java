@@ -5,22 +5,12 @@ import java.util.ArrayList;
 public class Field
 {
     private final ArrayList<Ship> ships;
-    private final Boolean[] field;
+    private final Boolean[] isHit;
 
     public Field()
     {
         ships = new ArrayList<>();
-        field = new Boolean[100];
-    }
-
-    public boolean shipContains(int pos)
-    {
-        for (Ship ship : ships)
-        {
-            if (ship.contains(pos))
-                return true;
-        }
-        return false;
+        isHit = new Boolean[100];
     }
 
     /**
@@ -45,7 +35,7 @@ public class Field
         int alive = 0;
         for (Integer position : ship.getPositions())
         {
-            if (!field[position])
+            if (!isHit[position])
                 alive++;
         }
         return alive;
@@ -81,6 +71,6 @@ public class Field
 
     public void setUnit(int pos, boolean shot)
     {
-        field[pos] = shot;
+        isHit[pos] = shot;
     }
 }

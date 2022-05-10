@@ -18,22 +18,25 @@ public class Controller
 
     public int shoot(UtilClient client, int pos)
     {
-        if (player0OnTurn == (client.getId() == 1))
+        if (player0OnTurn == (client.getId() == 0))
             return 0;
+
         Field clField = client.getField();
-        boolean ship = clField.shipContains(pos);
+        boolean anyShip = clField.getShipOn(pos) != null;
+
+        if (!anyShip)
+            player0OnTurn = !player0OnTurn;
 
         clField.setUnit(pos, true);
-        server.shot(client, pos, ship);
-        if (!ship)
+        server.shot(client, pos, anyShip);
+
+        if (!anyShip)
             return 0;
         if (clField.getAliveUnits(clField.getShipOn(pos)) > 0)
             return 1;
         for (Ship ship1 : clField.getShips())
-        {
             if (clField.getAliveUnits(ship1) > 0)
                 return 2;
-        }
         return 3;
     }
 

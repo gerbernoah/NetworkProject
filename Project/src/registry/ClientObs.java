@@ -5,5 +5,5 @@ import java.rmi.RemoteException;
 
 public interface ClientObs extends Remote
 {
-    void shot(int pos) throws RemoteException;
+    void shot(int pos, boolean onTurn) throws RemoteException;
 }

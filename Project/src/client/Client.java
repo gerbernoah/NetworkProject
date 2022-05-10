@@ -13,7 +13,8 @@ import java.util.Arrays;
 public class Client implements ClientObs
 {
     private Server server;
-    String regName;
+    private String regName;
+    private boolean playerOnTurn;
 
     public Client()
     {
@@ -64,7 +65,8 @@ public class Client implements ClientObs
     {
         try
         {
-            return server.shoot(regName, pos);
+            playerOnTurn = server.shoot(regName, pos);
+            return playerOnTurn;
         } catch (RemoteException e)
         {
             e.printStackTrace();
@@ -73,8 +75,14 @@ public class Client implements ClientObs
     }
 
     @Override
-    public void shot(int pos) throws RemoteException
+    public void shot(int pos, boolean onTurn) throws RemoteException
     {
+        playerOnTurn = onTurn;
         //Schiff an der Stelle pos wurde abgeschossen todo schiff löschen
+    }
+
+    public boolean isPlayerOnTurn()
+    {
+        return playerOnTurn;
     }
 }

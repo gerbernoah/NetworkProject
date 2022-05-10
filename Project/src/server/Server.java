@@ -41,7 +41,7 @@ public class Server implements ServerObs
      * @param pClient the client from which the shot is from
      * @param pos the position shot
      */
-    public void shot(UtilClient pClient, int pos)
+    public void shot(UtilClient pClient, int pos, boolean onTurn)
     {
         for (UtilClient client : clients)
         {
@@ -49,7 +49,7 @@ public class Server implements ServerObs
                 continue;
             try
             {
-                client.getClient().shot(pos);
+                client.getClient().shot(pos, onTurn);
             } catch (RemoteException e)
             {
                 throw new RuntimeException(e);

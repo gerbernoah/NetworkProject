@@ -1,61 +1,44 @@
 package server;
 
-import java.util.ArrayList;
+import server.field.Field;
+
+import java.awt.*;
 
 public class Controller
 {
-    private final Field field;
+    private boolean player0OnTurn;
     private final Server server;
 
     public Controller(Server server)
     {
-        field = new Field();
+        player0OnTurn = true;
         this.server = server;
     }
 
-    private void killShipUnit(int pos)
+    public boolean shoot(UtilClient client, int pos)
     {
-        field.setUnit(pos, Unit.SHOT);
-        server.killShipUnit(pos);
+        if (player0OnTurn == (client.getId() == 1))
+            return false;
+        Field clField = client.getField();
+        boolean ship = clField.shipContains(pos);
+
+        clField.setUnit(pos, true);
+        server.shot(pos);
+        if (ship)
+            client.getField().setUnit(pos, false);
+        return ship;
     }
 
-    public boolean shoot(int clientID, int pos)
+    public boolean placeShips(UtilClient client, Point[] ships)
     {
-        switch (field.getUnit(pos))
+        for (Point ship : ships)
         {
-            case EMPTY: return true;
-            case SHOT: return false;
-            case SHIP0:
-                if (clientID == 0)  //shooting own ship
-                    return false;
-                killShipUnit(pos);
-                return true;
-            case SHIP1:
-                if (clientID == 1)  //shooting own ship
-                    return false;
-                killShipUnit(pos);
-                return true;
+            if (!client.getField().addShip(ship.x, ship.y))
+            {
+                client.getField().clearShips();
+                return false;
+            }
         }
-        return false;   //something went wrong
-    }
-
-    public boolean placeShip(int clientID, int startPos, int endPos)
-    {
-        ArrayList<Integer> positions;
-        int xStartPos = startPos % 10;
-        int yStartPos = startPos / 10;
-        int xEndPos = endPos % 10;
-        int yEndPos = endPos / 10;
-
-        if (xStartPos == xEndPos)
-        {
-
-        }
-        else if (yStartPos == yEndPos)
-        {
-
-        }
-        else
-            return false;   //something went wrong
+        return true;
     }
 }

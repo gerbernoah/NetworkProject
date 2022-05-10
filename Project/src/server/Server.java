@@ -1,17 +1,16 @@
 package server;
 
 import client.Client;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import registry.ServerObs;
+import server.field.Field;
 
+import java.awt.*;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class Server implements ServerObs
@@ -38,7 +37,7 @@ public class Server implements ServerObs
         }
     }
 
-    public void killShipUnit(int pos)
+    public void shot(int pos)
     {
         for (UtilClient client : clients)
         {
@@ -47,31 +46,33 @@ public class Server implements ServerObs
                 client.getClient().shot(pos);
             } catch (RemoteException e)
             {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
     }
 
     @Override
-    public int shoot(String name, int pos) throws RemoteException
+    public boolean shoot(String name, int pos) throws RemoteException
     {
         for (UtilClient client : clients)
         {
             if (Objects.equals(client.getName(), name))
-                return controller.shoot(client.getId(), pos) ? 1 : 0;   //returns 1 if shot was valid, 0 if invalid
+                return controller.shoot(client, pos);  //returns if shot was a hit
         }
-        return -1;  //returns -1 if name not exist
+        System.out.println("client not found");
+        return false;
     }
 
     @Override
-    public int placeShip(String name, int startPos, int endPos) throws RemoteException
+    public boolean placeShips(String name, Point[] ships) throws RemoteException
     {
         for (UtilClient client : clients)
         {
             if (Objects.equals(client.getName(), name))
-                return controller.placeShip(client.getId(), startPos, endPos) ? 1 : 0;   //returns 1 if shot was valid, 0 if invalid
+                return controller.placeShips(client, ships); //returns if placement was valid
         }
-        return -1;  //returns -1 if name not exist
+        System.out.println("client not found");
+        return false;
     }
 
     @Override
@@ -95,9 +96,10 @@ public class Server implements ServerObs
 class UtilClient
 {
     private static int nextID = 0;
-    private Client client;
-    private int id;
-    private String name;
+    private final Client client;
+    private final int id;
+    private final String name;
+    private final Field field;
 
     public UtilClient(Client client, String name)
     {
@@ -106,6 +108,7 @@ class UtilClient
 
         this.client = client;
         this.name = name;
+        field = new Field();
     }
 
     public Client getClient()
@@ -113,19 +116,9 @@ class UtilClient
         return client;
     }
 
-    public void setClient(Client client)
-    {
-        this.client = client;
-    }
-
     public int getId()
     {
         return id;
-    }
-
-    public void setId(int id)
-    {
-        this.id = id;
     }
 
     public String getName()
@@ -133,9 +126,9 @@ class UtilClient
         return name;
     }
 
-    public void setName(String name)
+    public Field getField()
     {
-        this.name = name;
+        return field;
     }
 }
 

@@ -1,5 +1,6 @@
 package registry;
 
+import java.awt.*;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -8,9 +9,9 @@ public interface ServerObs extends Remote
     /**
      * @param name of the client which shot
      * @param pos destination of the shot
-     * @return if shot was valid
+     * @return if shot was a hit
      */
-    int shoot(String name, int pos) throws RemoteException;
+    boolean shoot(String name, int pos) throws RemoteException;
 
     /**
      *
@@ -19,7 +20,7 @@ public interface ServerObs extends Remote
      * @param endPos destination of the placement
      * @return if placement was valid
      */
-    int placeShip(String name, int startPos, int endPos) throws RemoteException;
+    boolean placeShips(String name, Point[] ships) throws RemoteException;
 
     /**
      * @param name to associate with the client reference

@@ -3,6 +3,7 @@ package client;
 import registry.ClientObs;
 import server.Server;
 
+import java.awt.*;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -42,14 +43,11 @@ public class Client implements ClientObs
         }
     }
 
-    public boolean placeShip(int startPos, int endPos)
+    public boolean placeShips(Point[] ships)
     {
         try
         {
-            int err = server.placeShip(regName, startPos, endPos);
-            if (err == -1)
-                System.out.println("client name not in registry");
-            return err == 1;
+            return server.placeShips(regName, ships);
         } catch (RemoteException e)
         {
             e.printStackTrace();
@@ -66,10 +64,7 @@ public class Client implements ClientObs
     {
         try
         {
-            int err = server.shoot(regName, pos);
-            if (err == -1)
-                System.out.println("client name not in registry");
-            return err == 1;
+            return server.shoot(regName, pos);
         } catch (RemoteException e)
         {
             e.printStackTrace();

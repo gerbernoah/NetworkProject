@@ -1,6 +1,7 @@
 package client;
 
 import registry.ClientObs;
+import registry.ServerObs;
 import server.Server;
 
 import java.awt.*;
@@ -12,7 +13,7 @@ import java.util.Arrays;
 
 public class Client implements ClientObs
 {
-    private Server server;
+    private ServerObs server;
     private String regName;
     private boolean playerOnTurn;
 
@@ -21,7 +22,7 @@ public class Client implements ClientObs
         try {
 
             Registry registry = LocateRegistry.getRegistry("localhost", Registry.REGISTRY_PORT);
-            server = (Server) registry.lookup("s");
+            server = (ServerObs) registry.lookup("s");
 
             ClientObs clientObs = (ClientObs) UnicastRemoteObject.exportObject(this, 0);
 

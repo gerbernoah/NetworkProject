@@ -1,6 +1,7 @@
 package server;
 
 import client.Client;
+import registry.ClientObs;
 import registry.ServerObs;
 import server.field.Field;
 
@@ -86,7 +87,7 @@ public class Server implements ServerObs
     {
         try
         {
-            clients.add( new UtilClient((Client) registry.lookup(name), name));
+            clients.add( new UtilClient((ClientObs) registry.lookup(name), name));
         } catch (NotBoundException e)
         {
             e.printStackTrace();
@@ -102,22 +103,22 @@ public class Server implements ServerObs
 class UtilClient
 {
     private static int nextID = 0;
-    private final Client client;
+    private final ClientObs client;
     private final int id;
     private final String name;
     private final Field field;
 
-    public UtilClient(Client client, String name)
+    public UtilClient(ClientObs clientObs, String name)
     {
         id = nextID;
         nextID++;
 
-        this.client = client;
+        this.client = clientObs;
         this.name = name;
         field = new Field();
     }
 
-    public Client getClient()
+    public ClientObs getClient()
     {
         return client;
     }

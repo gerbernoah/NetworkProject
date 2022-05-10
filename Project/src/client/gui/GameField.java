@@ -76,12 +76,7 @@ public class GameField {
                     public void mouseClicked(MouseEvent e) {
                         if(client.isPlayerOnTurn()) {
                             int shoot = client.shoot(finalI);
-                            boolean hit;
-                            if(shoot == 0) {
-                                hit = false;
-                            } else {
-                                hit = true;
-                            }
+                            boolean hit = shoot != 0;
                             setGameComponentAsShot(player, finalI, hit);
                         }
                     }

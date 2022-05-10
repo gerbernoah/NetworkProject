@@ -15,22 +15,24 @@ public class GameLabel extends JLabel {
         this.setOpaque(true);
         this.setBorder(new LineBorder(Color.BLACK));
         this.id = id;
-        reloadColor();
+        reloadColor(false);
     }
 
     public boolean setShip(boolean ship) {
         if(ship && !placeable) return false;
         this.ship = ship;
         this.placeable = !ship;
-        reloadColor();
+        reloadColor(false);
         return true;
     }
 
-    public void reloadColor() {
-        if (ship) {
+    public void reloadColor(boolean hit) {
+        if(hit) {
+            this.setBackground(Color.RED);
+        } else if(this.hit) {
+            this.setBackground(Color.GRAY);
+        } else if (ship) {
             this.setBackground(new Color(167,177,176));
-        } else if (!ship && !placeable) {
-            this.setBackground(Color.pink);
         } else {
             this.setBackground(Color.decode("#038cfc"));
         }

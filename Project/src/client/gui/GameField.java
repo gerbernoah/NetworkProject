@@ -1,5 +1,6 @@
 package client.gui;
 
+import client.Client;
 import client.gui.components.GameLabel;
 import client.gui.components.HintTextField;
 import client.gui.components.Ship;
@@ -7,12 +8,14 @@ import client.gui.components.Ship;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class GameField {
 
     private Container contentPane;
+    private Client client;
 
     private JPanel[] gamePanel = new JPanel[2];
     private GameLabel[][] gameComponents = new GameLabel[2][100];
@@ -37,7 +40,8 @@ public class GameField {
     private JLabel[] hitsEnemy = new JLabel[2];
     private JLabel[] hitRateEnemy = new JLabel[2];
 
-    public GameField(Container contentPane) {
+    public GameField(Container contentPane, Client client) {
+        this.client = client;
         this.contentPane = contentPane;
         contentPane.setLayout(null);
         contentPane.removeAll();
@@ -65,6 +69,27 @@ public class GameField {
         for(int i = 0; i < 100; i++) {
             gameComponents[player][i] = new GameLabel(i);
             gamePanel[player].add(gameComponents[player][i]);
+            if(player == 1) {
+                int finalI = i;
+                gameComponents[player][i].addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if(client.isPlayerOnTurn()) {
+                            setGameComponentAsShot(player, finalI, client.shoot(finalI));
+                        }
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        gameComponents[player][finalI].setBackground(Color.decode("#5db5fc"));
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        gameComponents[player][finalI].reloadColor(false);
+                    }
+                });
+            }
         }
         contentPane.add(gamePanel[player]);
 
@@ -134,14 +159,6 @@ public class GameField {
         return contentPane;
     }
 
-    public void setContentPane(Container contentPane) {
-        this.contentPane = contentPane;
-    }
-
-    public void setFieldListener(MouseAdapter act, int id, int player) {
-        gameComponents[player][id].addMouseListener(act);
-    }
-
     public void setupShips(Ship[] ships) {
         for(Ship ship : ships) {
             for(int pos : ship.getPosition()) {
@@ -151,8 +168,12 @@ public class GameField {
         contentPane.repaint();
     }
 
-    public void setGameComponentAsHit(int player, int id) {
+    public void setGameComponentAsShot(int player, int id, boolean hit) {
         gameComponents[player][id].setHit(true);
+        gameComponents[player][id].reloadColor(hit);
+        for (MouseListener act : gameComponents[player][id].getMouseListeners()) {
+            gameComponents[player][id].removeMouseListener(act);
+        }
     }
 
 }
@@ -162,7 +183,7 @@ class MainGameField {
         JFrame jf = new JFrame();
         jf.setVisible(true);
         jf.setSize(1024,720);
-        GameField gamefield = new GameField(jf.getContentPane());
+        GameField gamefield = new GameField(jf.getContentPane(), new Client());
         jf.setContentPane(gamefield.getContentPane());
     }
 }

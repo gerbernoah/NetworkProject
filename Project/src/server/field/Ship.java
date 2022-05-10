@@ -17,6 +17,11 @@ public class Ship
         horizontal = yStartPos == yEndPos;
     }
 
+    public boolean validate()
+    {
+        return xStartPos == xEndPos || yStartPos == yEndPos;
+    }
+
     public boolean contains(int x, int y)
     {
         return xStartPos <= x && x <= xEndPos
@@ -33,10 +38,10 @@ public class Ship
         ArrayList<Integer> positions = new ArrayList<>();
         if (horizontal)
             for (int i = xStartPos; i <= xEndPos; i++)
-                positions.add(i);
+                positions.add(yStartPos * 10 + i);
         else
             for (int i = yStartPos; i <= yEndPos; i++)
-                positions.add(i);
+                positions.add(i * 10 + xStartPos);
         return positions;
     }
 

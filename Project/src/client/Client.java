@@ -59,19 +59,20 @@ public class Client implements ClientObs
     /**
      *
      * @param pos destination to shoot
-     * @return if shot was hit
+     * @return if shot was hit; 0 = no hit; 1 = hit; 2 = hit + ship destroyed; 3 = hit + all ships destroyed;
      */
-    public boolean shoot(int pos)
+    public int shoot(int pos)
     {
         try
         {
-            playerOnTurn = server.shoot(regName, pos);
-            return playerOnTurn;
+            int hit = server.shoot(regName, pos);
+            playerOnTurn = hit > 0;
+            return hit;
         } catch (RemoteException e)
         {
             e.printStackTrace();
         }
-        return false;
+        return -1;
     }
 
     @Override

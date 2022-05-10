@@ -58,7 +58,7 @@ public class Server implements ServerObs
     }
 
     @Override
-    public boolean shoot(String name, int pos) throws RemoteException
+    public int shoot(String name, int pos) throws RemoteException
     {
         for (UtilClient client : clients)
         {
@@ -66,7 +66,7 @@ public class Server implements ServerObs
                 return controller.shoot(client, pos);  //returns if shot was a hit
         }
         System.out.println("client not found");
-        return false;
+        return -1;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class Server implements ServerObs
     {
         for (UtilClient client : clients)
         {
-            if (Objects.equals(client.getName(), name))
+            if (client.getName().equals(name))
                 return controller.placeShips(client, ships); //returns if placement was valid
         }
         System.out.println("client not found");

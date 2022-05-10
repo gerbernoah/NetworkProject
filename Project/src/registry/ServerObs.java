@@ -11,7 +11,7 @@ public interface ServerObs extends Remote
      * @param pos destination of the shot
      * @return if shot was a hit
      */
-    boolean shoot(String name, int pos) throws RemoteException;
+    int shoot(String name, int pos) throws RemoteException;
 
     /**
      *

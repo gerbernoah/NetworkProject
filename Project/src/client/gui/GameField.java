@@ -75,7 +75,14 @@ public class GameField {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         if(client.isPlayerOnTurn()) {
-                            setGameComponentAsShot(player, finalI, client.shoot(finalI));
+                            int shoot = client.shoot(finalI);
+                            boolean hit;
+                            if(shoot == 0) {
+                                hit = false;
+                            } else {
+                                hit = true;
+                            }
+                            setGameComponentAsShot(player, finalI, hit);
                         }
                     }
 

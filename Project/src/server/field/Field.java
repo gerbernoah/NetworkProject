@@ -1,6 +1,7 @@
 package server.field;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Field
 {
@@ -11,6 +12,7 @@ public class Field
     {
         ships = new ArrayList<>();
         isHit = new Boolean[100];
+        Arrays.fill(isHit, false);
     }
 
     /**

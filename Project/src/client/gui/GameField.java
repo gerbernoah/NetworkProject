@@ -46,6 +46,20 @@ public class GameField {
         contentPane.setLayout(null);
         contentPane.removeAll();
         setup();
+
+        /*
+        Point[] shipPositions = new Point[]{
+                new Point(3,4), new Point(94, 95),
+                new Point(43, 46), new Point(64, 67), new Point(40, 80)
+        };
+        boolean x = client.placeShips(shipPositions);
+        System.out.println(x);
+        Ship[] ships = new Ship[]{
+                new Ship(3,4), new Ship(94, 95),
+                new Ship(43, 46), new Ship(64, 67), new Ship(40, 80)
+        };
+        setupShips(ships);
+        */
     }
 
     private void setup() {
@@ -178,6 +192,19 @@ public class GameField {
         }
     }
 
+    public void colorBorder(boolean ownBorder)
+    {
+        if (ownBorder)
+        {
+            gamePanel[0].setBackground(Color.BLACK);
+            gamePanel[1].setBackground(Color.RED);
+        }
+        else
+        {
+            gamePanel[0].setBackground(Color.RED);
+            gamePanel[1].setBackground(Color.BLACK);
+        }
+    }
 }
 
 class MainGameField {

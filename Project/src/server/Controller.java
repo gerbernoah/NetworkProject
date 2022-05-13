@@ -28,7 +28,7 @@ public class Controller
             player0OnTurn = !player0OnTurn;
 
         clField.setUnit(pos, true);
-        server.shot(client, pos, anyShip);
+        server.shot(client, pos, !anyShip);
 
         if (!anyShip)
             return 0;

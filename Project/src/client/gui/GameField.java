@@ -3,7 +3,7 @@ package client.gui;
 import client.Client;
 import client.gui.components.GameLabel;
 import client.gui.components.HintTextField;
-import client.gui.components.Ship;
+import server.field.Ship;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -162,11 +162,12 @@ public class GameField {
     }
 
     public void setupShips(Ship[] ships) {
-        for(Ship ship : ships) {
+        /**for(Ship ship : ships) { TODO: SET EVERY SHIP POSITION "ship" to "true"
             for(int pos : ship.getPosition()) {
                 gameComponents[0][pos].setShip(true);
             }
         }
+         */
         contentPane.repaint();
     }
 

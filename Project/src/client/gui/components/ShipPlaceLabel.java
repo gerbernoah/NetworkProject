@@ -12,7 +12,7 @@ public class ShipPlaceLabel extends JLabel {
     public ShipPlaceLabel(String name, int length) {
         this.name = name;
         this.setText(name);
-        this.length = length;
+        this.length = length-1;
         this.setOpaque(true);
         this.setBackground(Color.lightGray);
         this.setBorder(new LineBorder(Color.BLACK));

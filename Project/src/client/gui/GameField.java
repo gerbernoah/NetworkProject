@@ -212,7 +212,7 @@ class MainGameField {
         JFrame jf = new JFrame();
         jf.setVisible(true);
         jf.setSize(1024,720);
-        GameField gamefield = new GameField(jf.getContentPane(), new Client());
-        jf.setContentPane(gamefield.getContentPane());
+        //GameField gamefield = new GameField(jf.getContentPane(), new Client());
+        //jf.setContentPane(gamefield.getContentPane());
     }
 }

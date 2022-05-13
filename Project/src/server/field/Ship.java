@@ -17,6 +17,10 @@ public class Ship
         horizontal = yStartPos == yEndPos;
     }
 
+    public Ship() {
+
+    }
+
     public boolean validate()
     {
         return xEndPos < 10 && yEndPos < 10 && xStartPos >= 0 && yStartPos >= 0

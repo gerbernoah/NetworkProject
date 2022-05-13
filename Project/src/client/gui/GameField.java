@@ -162,12 +162,11 @@ public class GameField {
     }
 
     public void setupShips(Ship[] ships) {
-        /**for(Ship ship : ships) { TODO: SET EVERY SHIP POSITION "ship" to "true"
-            for(int pos : ship.getPosition()) {
+        for(Ship ship : ships) {
+            for(int pos : ship.getPositions()) {
                 gameComponents[0][pos].setShip(true);
             }
         }
-         */
         contentPane.repaint();
     }
 

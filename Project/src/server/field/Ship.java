@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Ship
 {
-    private final int xStartPos, yStartPos, xEndPos, yEndPos;
-    private final boolean horizontal;
+    private int xStartPos, yStartPos, xEndPos, yEndPos;
+    private boolean horizontal;
 
     public Ship(int startPos, int endPos)
     {
@@ -19,7 +19,8 @@ public class Ship
 
     public boolean validate()
     {
-        return xStartPos == xEndPos || yStartPos == yEndPos;
+        return xEndPos < 10 && yEndPos < 10 && xStartPos >= 0 && yStartPos >= 0
+                && (xStartPos == xEndPos || yStartPos == yEndPos);
     }
 
     public boolean contains(int x, int y)
@@ -69,4 +70,25 @@ public class Ship
     {
         return yEndPos;
     }
+
+    /**
+     * changes ship position (nicht so hübsch gemacht :p)
+     * @param startPos of the ship
+     * @param endPos of the ship
+     */
+   public boolean setPos(int startPos, int endPos)
+   {
+       if ( new Ship(startPos, endPos).validate() )
+       {
+           xStartPos = startPos % 10;
+           yStartPos = startPos / 10;
+           xEndPos = endPos % 10;
+           yEndPos = endPos / 10;
+
+           horizontal = yStartPos == yEndPos;
+           return true;
+       }
+       else
+           return false;
+   }
 }

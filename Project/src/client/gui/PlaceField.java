@@ -79,17 +79,30 @@ public class PlaceField {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if(selectedShip != 11) {
+                        Ship ship = ships[selectedShip];
                         boolean possible = true;
-                        for(int i : ships[selectedShip].getPositions()) {
-                            if(gameComponents[i].isShip()) possible = false;
+                        for(int i : ship.getPositions()) {
+                            if (gameComponents[i].isShip() || !gameComponents[i].isPlaceable())
+                            {
+                                possible = false;
+                                break;
+                            }
                         }
                         if(possible) {
-                            for (int i : ships[selectedShip].getPositions()) {
+                            for (int i : ship.getPositions())
                                 gameComponents[i].setShip(true);
-                            }
+
+                            int xStart = Math.max(0, ship.getxStartPos() - 1);
+                            int yStart = Math.max(0, ship.getyStartPos() - 1);
+                            int xEnd = Math.min(9, ship.getxEndPos() + 1);
+                            int yEnd = Math.min(9, ship.getyEndPos() + 1);
+
+                            for (int x = xStart; x <= xEnd; x++)
+                                for (int y = yStart; y <= yEnd; y++)
+                                    gameComponents[y * 10 + x].setPlaceable(false);
+
                             selectedShip = 11;
                         }
-
                     }
                 }
 
@@ -98,9 +111,10 @@ public class PlaceField {
                     if(selectedShip != 11) {
                         ships[selectedShip].setPos(finalI, finalI + (shipPlaceLabels[selectedShip].getLength()*multiplier));
                         for (int i : ships[selectedShip].getPositions()) {
-                            if(gameComponents[i].isShip()) gameComponents[i].setBackground(Color.RED);
-                            if(!gameComponents[i].isShip()) gameComponents[i].setBackground(Color.GREEN);
-                            System.out.println(i);
+                            if(gameComponents[i].isShip() || !gameComponents[i].isPlaceable())
+                                gameComponents[i].setBackground(Color.RED);
+                            else
+                            gameComponents[i].setBackground(Color.GREEN);
                         }
                     }
                 }

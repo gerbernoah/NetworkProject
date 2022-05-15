@@ -14,6 +14,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class PlaceField {
 
@@ -32,8 +34,11 @@ public class PlaceField {
 
     private int selectedShip = 11;
 
-    public PlaceField(Container contentPane) {
-        this.contentPane = contentPane;
+    private final Client client;
+
+    public PlaceField(JFrame jFrame) {
+        this.client = new Client(jFrame);
+        this.contentPane = jFrame.getContentPane();
         setupPlaceField();
         setupShipField();
         setupButtons();
@@ -169,7 +174,13 @@ public class PlaceField {
         readyButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //TODO: READY VALIDATE
+                System.out.println("placed listener");
+                Point[] points = new Point[ships.length];
+                for (int i = 0; i < ships.length; i++)
+                {
+                    points[i] = new Point(ships[i].getStartPos(), ships[i].getEndPos());
+                }
+                client.placeShips(points);
             }
 
             @Override
@@ -196,7 +207,7 @@ class MainPlaceField {
         jf.setVisible(true);
         jf.setSize(1024,720);
         jf.setLayout(null);
-        PlaceField placefield = new PlaceField(jf.getContentPane());
+        PlaceField placefield = new PlaceField(jf);
         jf.setContentPane(placefield.getContentPane());
     }
 }

@@ -55,6 +55,16 @@ public class Ship
         return horizontal;
     }
 
+    public int getStartPos()
+    {
+        return yStartPos * 10 + xStartPos;
+    }
+
+    public int getEndPos()
+    {
+        return yEndPos * 10 + xEndPos;
+    }
+
     public int getxStartPos()
     {
         return xStartPos;

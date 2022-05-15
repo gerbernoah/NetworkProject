@@ -1,10 +1,12 @@
 package client;
 
 import client.gui.GameField;
+import client.gui.PlaceField;
 import registry.ClientObs;
 import registry.ServerObs;
 import server.Server;
 
+import javax.swing.*;
 import java.awt.*;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -17,11 +19,12 @@ public class Client implements ClientObs
     private ServerObs server;
     private String regName;
     private boolean playerOnTurn;
-    private final GameField gameField;
+    private GameField gameField;
+    private final JFrame jFrame;
 
-    public Client(GameField gameField)
+    public Client(JFrame jFrame)
     {
-        this.gameField = gameField;
+        this.jFrame = jFrame;
         try {
             Registry registry = LocateRegistry.getRegistry("localhost", Registry.REGISTRY_PORT);
             server = (ServerObs) registry.lookup("s");
@@ -57,6 +60,7 @@ public class Client implements ClientObs
     {
         try
         {
+            server.clientReady(regName);
             return server.placeShips(regName, ships);
         } catch (RemoteException e)
         {
@@ -88,7 +92,15 @@ public class Client implements ClientObs
     public void shot(int pos, boolean onTurn) throws RemoteException
     {
         setPlayerOnTurn(onTurn);
-        //Schiff an der Stelle pos wurde abgeschossen todo schiff löschen
+        //Schiff an der Stelle pos wurde abgeschossen todo schiff löschen und umliegende felder als leer markieren
+    }
+
+    @Override
+    public void gameStart() throws RemoteException
+    {
+        System.out.println("test");
+        this.gameField = new GameField(jFrame.getContentPane(),this);
+        setPlayerOnTurn(playerOnTurn);
     }
 
     public boolean isPlayerOnTurn()

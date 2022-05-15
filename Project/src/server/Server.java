@@ -97,6 +97,32 @@ public class Server implements ServerObs
         }
     }
 
+    @Override
+    public void clientReady(String name) throws RemoteException
+    {
+        System.out.println("test");
+        boolean allReady = true;
+        for (UtilClient client : clients)
+        {
+            if (client.getName().equals(name))
+                client.setReady(true);
+            if (!client.isReady())
+                allReady = false;
+        }
+
+            if (allReady)
+                clients.forEach(client ->
+                {
+                    try
+                    {
+                        client.getClient().gameStart();
+                    } catch (RemoteException e)
+                    {
+                        throw new RuntimeException(e);
+                    }
+                });
+    }
+
     public static void main(String[] args)
     {
         new Server();

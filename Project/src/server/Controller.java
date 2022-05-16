@@ -16,12 +16,15 @@ public class Controller
         this.server = server;
     }
 
-    public int shoot(UtilClient client, int pos)
+    public int shoot(UtilClient client, int pos, UtilClient destClient)
     {
         if (player0OnTurn == (client.getId() == 0))
+        {
+            System.out.println("not your turn");
             return 0;
+        }
 
-        Field clField = client.getField();
+        Field clField = destClient.getField();
         boolean anyShip = clField.getShipOn(pos) != null;
 
         if (!anyShip)

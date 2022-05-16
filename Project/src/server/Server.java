@@ -64,10 +64,20 @@ public class Server implements ServerObs
     @Override
     public int shoot(String name, int pos) throws RemoteException
     {
+        UtilClient dstClient = null;
+        for (UtilClient client : clients)
+        {
+            if (client.getName().equals(name))
+                continue;
+            else
+                dstClient = client;
+            break;
+        }
+
         for (UtilClient client : clients)
         {
             if (Objects.equals(client.getName(), name))
-                return controller.shoot(client, pos);  //returns if shot was a hit
+                return controller.shoot(client, pos, dstClient);  //returns if shot was a hit
         }
         System.out.println("client not found");
         return -1;

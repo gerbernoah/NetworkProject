@@ -2,9 +2,11 @@ package client;
 
 import client.gui.GameField;
 import client.gui.PlaceField;
+import client.gui.components.GameLabel;
 import registry.ClientObs;
 import registry.ServerObs;
 import server.Server;
+import server.field.Ship;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +23,7 @@ public class Client implements ClientObs
     private boolean playerOnTurn;
     private GameField gameField;
     private final JFrame jFrame;
+    private Ship[] ships;
 
     public Client(JFrame jFrame)
     {
@@ -100,6 +103,7 @@ public class Client implements ClientObs
     {
         System.out.println("test");
         this.gameField = new GameField(jFrame.getContentPane(),this);
+        this.gameField.setupShips(ships);
         setPlayerOnTurn(playerOnTurn);
     }
 
@@ -113,5 +117,9 @@ public class Client implements ClientObs
         System.out.println(onTurn);
         gameField.colorBorder(onTurn);
         playerOnTurn = onTurn;
+    }
+
+    public void setShips(Ship[] ships) {
+        this.ships = ships;
     }
 }

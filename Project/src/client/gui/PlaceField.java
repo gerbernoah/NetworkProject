@@ -152,18 +152,18 @@ public class PlaceField {
             shipPlaceLabels[i].addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    if(selectedShip != 11) {
-                        selectedShip = finalI;
-                        for(int i : ships[selectedShip].getPositions()) {
-                            gameComponents[i].setShip(false);
-                        }
-                        System.out.println(selectedShip);
-                    } else if (selectedShip == 11) {
-                        selectedShip = finalI;
-                        for(int i : ships[selectedShip].getPositions()) {
-                            gameComponents[i].setShip(false);
-                        }
-                    }
+                    selectedShip = finalI;
+                    Ship ship = ships[selectedShip];
+                    int xStart = Math.max(0, ship.getxStartPos() - 1);
+                    int yStart = Math.max(0, ship.getyStartPos() - 1);
+                    int xEnd = Math.min(9, ship.getxEndPos() + 1);
+                    int yEnd = Math.min(9, ship.getyEndPos() + 1);
+
+                    for (int x = xStart; x <= xEnd; x++)
+                        for (int y = yStart; y <= yEnd; y++)
+                            gameComponents[y * 10 + x].setPlaceable(true);
+                    for (int i : ship.getPositions())
+                        gameComponents[i].setShip(false);
                 }
 
                 @Override
@@ -189,6 +189,7 @@ public class PlaceField {
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.out.println("placed listener");
+                client.setShips(ships);
                 Point[] points = new Point[ships.length];
                 for (int i = 0; i < ships.length; i++)
                 {
@@ -221,6 +222,7 @@ class MainPlaceField {
         jf.setVisible(true);
         jf.setSize(1024,720);
         jf.setLayout(null);
+        jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         PlaceField placefield = new PlaceField(jf);
         jf.setContentPane(placefield.getContentPane());
     }

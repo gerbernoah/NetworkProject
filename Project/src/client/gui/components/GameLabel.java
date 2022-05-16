@@ -19,10 +19,7 @@ public class GameLabel extends JLabel {
     }
 
     public boolean setShip(boolean ship) {
-        if(this.ship || !placeable)
-            return false;
         this.ship = ship;
-        this.placeable = !ship;
         reloadColor(false);
         return true;
     }
@@ -34,8 +31,6 @@ public class GameLabel extends JLabel {
             this.setBackground(Color.GRAY);
         } else if (ship) {
             this.setBackground(new Color(167,177,176));
-        } else if (!placeable) {
-            this.setBackground(new Color(165, 0, 24));
         } else {
             this.setBackground(Color.decode("#038cfc"));
         }
@@ -67,5 +62,6 @@ public class GameLabel extends JLabel {
 
     public void setPlaceable(boolean placeable) {
         this.placeable = placeable;
+        reloadColor(false);
     }
 }

@@ -3,10 +3,8 @@ package client.gui;
 import client.Client;
 import client.gui.components.GameLabel;
 import client.gui.components.ShipPlaceLabel;
-import org.w3c.dom.ls.LSOutput;
 import server.field.Ship;
 
-import javax.sound.sampled.Line;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
@@ -14,8 +12,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class PlaceField {
 
@@ -30,6 +26,7 @@ public class PlaceField {
     private JLabel readyButton = new JLabel("Ready", SwingConstants.CENTER);
 
     private Ship[] ships = new Ship[5];
+    private Ship[] tempShips = new Ship[5];
     private int multiplier = 1;
 
     private int selectedShip = 11;
@@ -58,6 +55,7 @@ public class PlaceField {
         });
         contentPane.requestFocus();
         for(int i = 0; i < 5; i++) {
+            tempShips[i] = new Ship();
             ships[i] = new Ship();
         }
     }
@@ -79,7 +77,7 @@ public class PlaceField {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if(selectedShip != 11) {
-                        Ship ship = ships[selectedShip];
+                        Ship ship = tempShips[selectedShip];
                         boolean possible = true;
                         for(int i : ship.getPositions()) {
                             if (gameComponents[i].isShip() || !gameComponents[i].isPlaceable())
@@ -101,6 +99,12 @@ public class PlaceField {
                                 for (int y = yStart; y <= yEnd; y++)
                                     gameComponents[y * 10 + x].setPlaceable(false);
 
+                            ships[selectedShip] = tempShips[selectedShip];
+
+                            for (int z = 0; z < shipPlaceLabels.length; z++)
+                                if (ships[z].placed())
+                                    shipPlaceLabels[z].setBackground(new Color(0, 255, 0));
+
                             selectedShip = 11;
                         }
                     }
@@ -109,13 +113,16 @@ public class PlaceField {
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     if(selectedShip != 11) {
-                        ships[selectedShip].setPos(finalI, finalI + (shipPlaceLabels[selectedShip].getLength()*multiplier));
-                        for (int i : ships[selectedShip].getPositions()) {
+                        tempShips[selectedShip].setPos(finalI, finalI + (shipPlaceLabels[selectedShip].getLength()*multiplier));
+                        for (int i : tempShips[selectedShip].getPositions()) {
                             if(gameComponents[i].isShip() || !gameComponents[i].isPlaceable())
                                 gameComponents[i].setBackground(Color.RED);
                             else
                             gameComponents[i].setBackground(Color.GREEN);
                         }
+                        for (int z = 0; z < shipPlaceLabels.length; z++)
+                            if (ships[z].placed())
+                                shipPlaceLabels[z].setBackground(new Color(0, 255, 0));
                     }
                 }
                 @Override
@@ -123,6 +130,9 @@ public class PlaceField {
                     for(GameLabel lbl : gameComponents) {
                         lbl.reloadColor(false);
                     }
+                    for (int z = 0; z < shipPlaceLabels.length; z++)
+                        if (ships[z].placed())
+                            shipPlaceLabels[z].setBackground(new Color(0, 255, 0));
                 }
             });
             gamePanel.add(gameComponents[i]);
@@ -164,16 +174,30 @@ public class PlaceField {
                             gameComponents[y * 10 + x].setPlaceable(true);
                     for (int i : ship.getPositions())
                         gameComponents[i].setShip(false);
+
+                    for (int z = 0; z < shipPlaceLabels.length; z++) {
+                        if(ships[z].placed()) {
+                            shipPlaceLabels[z].setBackground(new Color(0,255,0));
+                        } else {
+                            shipPlaceLabels[z].setBackground(Color.lightGray);
+                        }
+                    }
+                    ships[selectedShip] = new Ship();
                 }
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     shipPlaceLabels[finalI].setBackground(Color.GRAY);
+                    if (ships[finalI].placed())
+                        shipPlaceLabels[finalI].setBackground(new Color(30, 150, 30));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     shipPlaceLabels[finalI].setBackground(Color.lightGray);
+                    for (int z = 0; z < shipPlaceLabels.length; z++)
+                        if (ships[z].placed())
+                            shipPlaceLabels[z].setBackground(new Color(0, 255, 0));
                 }
             });
         }

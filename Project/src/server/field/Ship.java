@@ -105,4 +105,8 @@ public class Ship
        else
            return false;
    }
+
+   public boolean placed() {
+       return !(xStartPos == yEndPos) && !(yStartPos == xEndPos);
+   }
 }

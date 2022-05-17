@@ -1,11 +1,8 @@
 package client;
 
 import client.gui.GameField;
-import client.gui.PlaceField;
-import client.gui.components.GameLabel;
 import registry.ClientObs;
 import registry.ServerObs;
-import server.Server;
 import server.field.Ship;
 
 import javax.swing.*;

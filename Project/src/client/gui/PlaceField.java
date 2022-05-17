@@ -73,7 +73,7 @@ public class PlaceField {
 
     private void addGameComponentsToField() {
         for(int i = 0; i < gameComponents.length; i++) {
-            gameComponents[i] = new GameLabel(i);
+            gameComponents[i] = new GameLabel();
             int finalI = i;
             gameComponents[i].addMouseListener(new MouseAdapter() {
                 @Override

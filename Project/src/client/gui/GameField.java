@@ -14,32 +14,32 @@ import java.awt.event.MouseListener;
 
 public class GameField {
 
-    private Container contentPane;
-    private Client client;
+    private final Container contentPane;
+    private final Client client;
 
-    private JPanel[] gamePanel = new JPanel[2];
-    private GameLabel[][] gameComponents = new GameLabel[2][100];
+    private final JPanel[] gamePanel = new JPanel[2];
+    private final GameLabel[][] gameComponents = new GameLabel[2][100];
 
-    private JTextArea chatArea = new JTextArea();
-    private JScrollPane scrollPane = new JScrollPane();
-    private JTextField chatField = new HintTextField("Nachricht eingeben..");
-    private JButton sendMessage = new JButton("Senden");
+    private final JTextArea chatArea = new JTextArea();
+    private final JScrollPane scrollPane = new JScrollPane();
+    private final JTextField chatField = new HintTextField("Nachricht eingeben..");
+    private final JButton sendMessage = new JButton("Senden");
 
-    private JLabel headerYou = new JLabel("Eigene Schiffe: ");
-    private JLabel headerEnemy = new JLabel("Gegnerische Schiffe: ");
+    private final JLabel headerYou = new JLabel("Eigene Schiffe: ");
+    private final JLabel headerEnemy = new JLabel("Gegnerische Schiffe: ");
 
-    private JPanel statsYou = new JPanel(new GridLayout(3, 2));
-    private JPanel statsEnemy = new JPanel(new GridLayout(3, 2));
+    private final JPanel statsYou = new JPanel(new GridLayout(3, 2));
+    private final JPanel statsEnemy = new JPanel(new GridLayout(3, 2));
 
-    private JLabel[] headerStats = new JLabel[2];
+    private final JLabel[] headerStats = new JLabel[2];
 
-    private JLabel[] shotsYou = new JLabel[2];
-    private JLabel[] hitsYou = new JLabel[2];
-    private JLabel[] hitRateYou = new JLabel[2];
+    private final JLabel[] shotsYou = new JLabel[2];
+    private final JLabel[] hitsYou = new JLabel[2];
+    private final JLabel[] hitRateYou = new JLabel[2];
 
-    private JLabel[] shotsEnemy = new JLabel[2];
-    private JLabel[] hitsEnemy = new JLabel[2];
-    private JLabel[] hitRateEnemy = new JLabel[2];
+    private final JLabel[] shotsEnemy = new JLabel[2];
+    private final JLabel[] hitsEnemy = new JLabel[2];
+    private final JLabel[] hitRateEnemy = new JLabel[2];
 
     public GameField(Container contentPane, Client client) {
         this.client = client;
@@ -69,7 +69,7 @@ public class GameField {
         gamePanel[player].setOpaque(true);
         gamePanel[player].setBackground(Color.BLACK);
         for(int i = 0; i < 100; i++) {
-            gameComponents[player][i] = new GameLabel(i);
+            gameComponents[player][i] = new GameLabel();
             gamePanel[player].add(gameComponents[player][i]);
             if(player == 1) {
                 int finalI = i;
@@ -98,8 +98,8 @@ public class GameField {
         contentPane.add(gamePanel[player]);
 
         switch (player) {
-            case 0 : gamePanel[0].setBounds(50,320, 320, 320); break;
-            case 1 : gamePanel[1].setBounds(654,320, 320, 320); break;
+            case 0 -> gamePanel[0].setBounds(50, 320, 320, 320);
+            case 1 -> gamePanel[1].setBounds(654, 320, 320, 320);
         }
     }
 
@@ -215,15 +215,5 @@ public class GameField {
             gamePanel[0].setBackground(Color.RED);
             gamePanel[1].setBackground(Color.BLACK);
         }
-    }
-}
-
-class MainGameField {
-    public static void main(String[] args) {
-        JFrame jf = new JFrame();
-        jf.setVisible(true);
-        jf.setSize(1024,720);
-        //GameField gamefield = new GameField(jf.getContentPane(), new Client());
-        //jf.setContentPane(gamefield.getContentPane());
     }
 }

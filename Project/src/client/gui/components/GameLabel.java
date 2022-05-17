@@ -6,22 +6,19 @@ import java.awt.*;
 
 public class GameLabel extends JLabel {
 
-    private int id;
     private boolean ship = false;
     private boolean hit = false;
     private boolean placeable = true;
 
-    public GameLabel(int id) {
+    public GameLabel() {
         this.setOpaque(true);
         this.setBorder(new LineBorder(Color.BLACK));
-        this.id = id;
         reloadColor(false);
     }
 
-    public boolean setShip(boolean ship) {
+    public void setShip(boolean ship) {
         this.ship = ship;
         reloadColor(false);
-        return true;
     }
 
     public void reloadColor(boolean hit) {
@@ -36,20 +33,8 @@ public class GameLabel extends JLabel {
         }
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public boolean isShip() {
         return ship;
-    }
-
-    public boolean isHit() {
-        return hit;
     }
 
     public void setHit(boolean hit) {

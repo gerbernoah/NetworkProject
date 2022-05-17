@@ -158,10 +158,6 @@ public class GameField {
         statsEnemy.add(hitRateEnemy[1]);
     }
 
-    public Container getContentPane() {
-        return contentPane;
-    }
-
     public void setupShips(Ship[] ships) {
         for(Ship ship : ships) {
             for(int pos : ship.getPositions()) {

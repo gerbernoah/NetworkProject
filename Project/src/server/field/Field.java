@@ -23,11 +23,20 @@ public class Field
     public boolean addShip(int startPos, int endPos)
     {
         Ship ship = new Ship(Math.min(startPos, endPos), Math.max(startPos, endPos));
-        for (Integer position : ship.getPositions())
-        {
-            if (getShipPositions().contains(position))
-                return false;
-        }
+
+        int xStart = Math.max(0, ship.getxStartPos() - 1);
+        int yStart = Math.max(0, ship.getyStartPos() - 1);
+        int xEnd = Math.min(9, ship.getxEndPos() + 1);
+        int yEnd = Math.min(9, ship.getyEndPos() + 1);
+
+        for (int x = xStart; x <= xEnd; x++)
+            for (int y = yStart; y <= yEnd; y++)
+                for (Ship ship1 : ships)
+                {
+                    if (ship1.contains(x, y))
+                        return false;
+                }
+
         ships.add(ship);
         return true;
     }

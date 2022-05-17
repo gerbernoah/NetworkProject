@@ -8,4 +8,6 @@ public interface ClientObs extends Remote
     void shot(int pos, boolean onTurn) throws RemoteException;
 
     void gameStart() throws RemoteException;
+
+    void messageReceived(String message) throws RemoteException;
 }

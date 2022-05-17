@@ -21,6 +21,7 @@ public class GameField {
     private GameLabel[][] gameComponents = new GameLabel[2][100];
 
     private JTextArea chatArea = new JTextArea();
+    private JScrollPane scrollPane = new JScrollPane();
     private JTextField chatField = new HintTextField("Nachricht eingeben..");
     private JButton sendMessage = new JButton("Senden");
 
@@ -103,14 +104,34 @@ public class GameField {
     }
 
     private void setupChat() {
-        contentPane.add(chatArea);
         contentPane.add(chatField);
         contentPane.add(sendMessage);
-        chatArea.setBounds(50,50, 924, 150);
+        contentPane.add(scrollPane);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.add(chatArea);
+        scrollPane.setBounds(50,50, 924, 150);
+        scrollPane.setViewportView(chatArea);
         chatArea.setEditable(false);
+        chatArea.setBorder(new LineBorder(Color.black));
         chatField.setBounds(50, 210, 774, 40);
         sendMessage.setBounds(834, 210, 140, 40);
-        chatArea.setBorder(new LineBorder(Color.black));
+
+        sendMessage.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                String message = chatField.getText();
+                client.sendMessage(message);
+                chatField.setText("");
+                chatArea.append("You: " + message + "\n");
+            }
+        });
+    }
+
+    public void messageReceived(String message)
+    {
+        chatArea.append("Opponent: " + message + "\n");
     }
 
     private void setupStats() {

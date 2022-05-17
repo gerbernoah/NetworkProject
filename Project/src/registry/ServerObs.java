@@ -28,4 +28,6 @@ public interface ServerObs extends Remote
     void clientAdded(String name) throws RemoteException;
 
     void clientReady(String name) throws RemoteException;
+
+    void messageReceived(String name, String message) throws RemoteException;
 }

@@ -1,9 +1,7 @@
 package server;
 
-import client.Client;
 import registry.ClientObs;
 import registry.ServerObs;
-import server.field.Field;
 
 import java.awt.*;
 import java.rmi.NotBoundException;
@@ -131,6 +129,19 @@ public class Server implements ServerObs
                         throw new RuntimeException(e);
                     }
                 });
+    }
+
+    @Override
+    public void messageReceived(String name, String message) throws RemoteException
+    {
+        for (UtilClient client : clients)
+        {
+            if (client.getName().equals(name))
+                continue;
+            else
+                client.getClient().messageReceived(message);
+            break;
+        }
     }
 
     public static void main(String[] args)

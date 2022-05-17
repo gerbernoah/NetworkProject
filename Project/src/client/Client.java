@@ -107,6 +107,23 @@ public class Client implements ClientObs
         setPlayerOnTurn(playerOnTurn);
     }
 
+    @Override
+    public void messageReceived(String message) throws RemoteException
+    {
+        gameField.messageReceived(message);
+    }
+
+    public void sendMessage(String message)
+    {
+        try
+        {
+            server.messageReceived(regName, message);
+        } catch (RemoteException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
     public boolean isPlayerOnTurn()
     {
         return playerOnTurn;

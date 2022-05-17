@@ -96,6 +96,7 @@ public class Client implements ClientObs
     {
         setPlayerOnTurn(onTurn);
         //Schiff an der Stelle pos wurde abgeschossen todo schiff löschen und umliegende felder als leer markieren
+        gameField.setGameComponentAsShot(0, pos);
     }
 
     @Override

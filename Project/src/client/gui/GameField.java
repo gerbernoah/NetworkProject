@@ -188,6 +188,13 @@ public class GameField {
         contentPane.repaint();
     }
 
+    public void setGameComponentAsShot(int player, int id) {
+        gameComponents[player][id].setHit(true);
+        gameComponents[player][id].reloadColor(gameComponents[player][id].isShip());
+        for (MouseListener act : gameComponents[player][id].getMouseListeners()) {
+            gameComponents[player][id].removeMouseListener(act);
+        }
+    }
     public void setGameComponentAsShot(int player, int id, boolean hit) {
         gameComponents[player][id].setHit(true);
         gameComponents[player][id].reloadColor(hit);

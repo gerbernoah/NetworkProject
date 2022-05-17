@@ -222,6 +222,7 @@ class MainPlaceField {
         jf.setVisible(true);
         jf.setSize(1024,720);
         jf.setLayout(null);
+        jf.setResizable(false);
         jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         PlaceField placefield = new PlaceField(jf);
         jf.setContentPane(placefield.getContentPane());

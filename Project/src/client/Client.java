@@ -101,7 +101,6 @@ public class Client implements ClientObs
     @Override
     public void gameStart() throws RemoteException
     {
-        System.out.println("test");
         this.gameField = new GameField(jFrame.getContentPane(),this);
         this.gameField.setupShips(ships);
         setPlayerOnTurn(playerOnTurn);

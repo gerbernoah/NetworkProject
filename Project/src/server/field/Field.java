@@ -32,10 +32,8 @@ public class Field
         for (int x = xStart; x <= xEnd; x++)
             for (int y = yStart; y <= yEnd; y++)
                 for (Ship ship1 : ships)
-                {
                     if (ship1.contains(x, y))
                         return false;
-                }
 
         ships.add(ship);
         return true;

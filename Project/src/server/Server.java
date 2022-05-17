@@ -108,7 +108,6 @@ public class Server implements ServerObs
     @Override
     public void clientReady(String name) throws RemoteException
     {
-        System.out.println("test");
         boolean allReady = true;
         for (UtilClient client : clients)
         {

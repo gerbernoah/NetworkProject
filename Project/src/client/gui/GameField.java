@@ -84,7 +84,7 @@ public class GameField {
                             boolean hit = shoot != 0;
                             setGameComponentAsShot(player, finalI, hit);
                             if(shoot == 3) {
-                                setGameEnd("Du hast gewonnen!", Color.GREEN);
+                                setGameEnd(true);
                             }
                         }
                     }
@@ -266,11 +266,11 @@ public class GameField {
         updateStats();
     }
 
-    private void setGameEnd(String winMessage, Color color) {
+    public void setGameEnd(boolean win) {
         contentPane.removeAll();
-        JLabel messageLabel = new JLabel(winMessage, SwingConstants.CENTER);
+        JLabel messageLabel = new JLabel(win ? "Du hast gewonnen!" : "Du hast verloren du Nazi!", SwingConstants.CENTER);
         messageLabel.setFont(new Font(messageLabel.getFont().getName(), messageLabel.getFont().getStyle(), 50));
-        messageLabel.setForeground(color);
+        messageLabel.setForeground(win ? Color.GREEN : Color.RED);
         messageLabel.setBounds(250, 220, 474, 120);
         contentPane.add(messageLabel);
         contentPane.repaint();

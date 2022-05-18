@@ -86,11 +86,16 @@ public class Client implements ClientObs
         return -1;
     }
 
+    /**
+     * @param pos pos of shot
+     * @param onTurn: 0 = no hit; 1 = hit; 2 = hit + ship destroyed; 3 = hit + all ships destroyed;
+     * @throws RemoteException
+     */
     @Override
     public void shot(int pos, int onTurn) throws RemoteException
     {
         if (onTurn == 3)
-            /*todo endGame*/;
+            gameField.setGameEnd(false);
         setPlayerOnTurn(onTurn > 0);
         gameField.setGameComponentAsShot(0, pos);
     }

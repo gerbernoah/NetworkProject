@@ -53,7 +53,6 @@ public class PlaceField {
                         multiplier = 1;
                     }
                     contentPane.revalidate();
-                    System.out.println(multiplier);
                 }
             }
         });
@@ -224,14 +223,12 @@ public class PlaceField {
                 }
 
                 String[] input = enterIpField.getText().split(":");
-                System.out.println(Arrays.toString(input));
                 int port = Registry.REGISTRY_PORT;
                 String host = "";
                 if (input.length > 0)
                     host = input[0];
                 if (input.length > 1)
                     port = Integer.parseInt(input[1]);
-                System.out.println(host +":"+ port);
                 Client client = new Client(jFrame, host, port);
 
                 client.setShips(ships);

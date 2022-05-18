@@ -22,11 +22,11 @@ public class Client implements ClientObs
     private final JFrame jFrame;
     private Ship[] ships;
 
-    public Client(JFrame jFrame)
+    public Client(JFrame jFrame, String host)
     {
         this.jFrame = jFrame;
         try {
-            Registry registry = LocateRegistry.getRegistry("localhost", Registry.REGISTRY_PORT);
+            Registry registry = LocateRegistry.getRegistry(host, Registry.REGISTRY_PORT);
             server = (ServerObs) registry.lookup("s");
 
             ClientObs clientObs = (ClientObs) UnicastRemoteObject.exportObject(this, 0);

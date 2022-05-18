@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 
 public class PlaceField {
 
+    private JFrame jFrame;
     private Container contentPane;
 
     private JPanel gamePanel = new JPanel(new GridLayout(10,10));
@@ -34,10 +35,8 @@ public class PlaceField {
 
     private int selectedShip = 11;
 
-    private final Client client;
-
     public PlaceField(JFrame jFrame) {
-        this.client = new Client(jFrame);
+        this.jFrame = jFrame;
         this.contentPane = jFrame.getContentPane();
         setupPlaceField();
         setupShipField();
@@ -121,7 +120,7 @@ public class PlaceField {
                             if(gameComponents[i].isShip() || !gameComponents[i].isPlaceable())
                                 gameComponents[i].setBackground(Color.RED);
                             else
-                            gameComponents[i].setBackground(Color.GREEN);
+                                gameComponents[i].setBackground(Color.GREEN);
                         }
                         for (int z = 0; z < shipPlaceLabels.length; z++)
                             if (ships[z].placed())
@@ -217,6 +216,7 @@ public class PlaceField {
         readyButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                Client client = new Client(jFrame, enterIpField.getText());
                 client.setShips(ships);
                 Point[] points = new Point[ships.length];
                 for (int i = 0; i < ships.length; i++)

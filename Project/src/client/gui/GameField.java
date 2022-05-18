@@ -98,8 +98,8 @@ public class GameField {
         contentPane.add(gamePanel[player]);
 
         switch (player) {
-            case 0 -> gamePanel[0].setBounds(50, 320, 320, 320);
-            case 1 -> gamePanel[1].setBounds(654, 320, 320, 320);
+            case 0: gamePanel[0].setBounds(50, 320, 320, 320); break;
+            case 1: gamePanel[1].setBounds(654, 320, 320, 320); break;
         }
     }
 

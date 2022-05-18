@@ -95,7 +95,7 @@ public class Server implements ServerObs
     }
 
     @Override
-    public boolean adClient(String name, ClientObs clientObs) throws RemoteException
+    public boolean addClient(String name, ClientObs clientObs) throws RemoteException
     {
         try
         {

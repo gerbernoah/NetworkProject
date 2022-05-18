@@ -24,7 +24,6 @@ public class Client implements ClientObs
 
     public Client(JFrame jFrame, String host, int port)
     {
-        System.out.println(host +":"+ port);
         this.jFrame = jFrame;
         try {
             Registry registry = LocateRegistry.getRegistry( host, port);
@@ -127,7 +126,6 @@ public class Client implements ClientObs
 
     private void setPlayerOnTurn(boolean onTurn)
     {
-        System.out.println(onTurn);
         gameField.colorBorder(onTurn);
         playerOnTurn = onTurn;
     }

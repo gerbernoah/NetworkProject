@@ -231,4 +231,13 @@ public class GameField {
             gamePanel[1].setBackground(Color.BLACK);
         }
     }
+
+    public void setGameEnd(String winMessage, Color color) {
+        contentPane.removeAll();
+        JLabel messageLabel = new JLabel(winMessage, SwingConstants.CENTER);
+        messageLabel.setFont(new Font(messageLabel.getFont().getName(), messageLabel.getFont().getStyle(), 50));
+        messageLabel.setForeground(color);
+        messageLabel.setBounds(300, 220, 424, 120);
+        contentPane.add(messageLabel);
+    }
 }

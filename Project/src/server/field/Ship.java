@@ -108,6 +108,5 @@ public class Ship
 
    public boolean placed() {
        return getStartPos() != getEndPos();
-       //return !(xStartPos == xEndPos) && !(yStartPos == yEndPos);
    }
 }

@@ -41,6 +41,10 @@ public class GameLabel extends JLabel {
         this.hit = hit;
     }
 
+    public boolean isHit() {
+        return hit;
+    }
+
     public boolean isPlaceable() {
         return placeable;
     }

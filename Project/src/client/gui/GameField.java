@@ -9,6 +9,8 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLOutput;
+import java.text.DecimalFormat;
 
 public class GameField {
 
@@ -38,6 +40,9 @@ public class GameField {
     private final JLabel[] shotsEnemy = new JLabel[2];
     private final JLabel[] hitsEnemy = new JLabel[2];
     private final JLabel[] hitRateEnemy = new JLabel[2];
+
+    private int[] shots = new int[2];
+    private int[] hits = new int[2];
 
     public GameField(Container contentPane, Client client) {
         this.client = client;
@@ -209,10 +214,12 @@ public class GameField {
         for (MouseListener act : gameComponents[player][id].getMouseListeners()) {
             gameComponents[player][id].removeMouseListener(act);
         }
+        increaseShots(1, gameComponents[player][id].isShip() == gameComponents[player][id].isHit());
     }
     public void setGameComponentAsShot(int player, int id, boolean hit) {
         gameComponents[player][id].setHit(true);
         gameComponents[player][id].reloadColor(hit);
+        increaseShots(0, hit);
         for (MouseListener act : gameComponents[player][id].getMouseListeners()) {
             gameComponents[player][id].removeMouseListener(act);
         }
@@ -230,6 +237,36 @@ public class GameField {
             gamePanel[0].setBackground(Color.RED);
             gamePanel[1].setBackground(Color.BLACK);
         }
+    }
+
+    private void updateStats() {
+        hitsEnemy[1].setText(String.valueOf(hits[1]));
+        shotsEnemy[1].setText(String.valueOf(shots[1]));
+
+        hitsYou[1].setText(String.valueOf(hits[0]));
+        shotsYou[1].setText(String.valueOf(shots[0]));
+        double[] hitRate = new double[2];
+        DecimalFormat df = new DecimalFormat("###.##");
+        if(shots[1] != 0) {
+            hitRate[1] = Double.valueOf(hits[1])/Double.valueOf(shots[1])*100;
+            System.out.println("hits1  "+ hits[1]);
+            System.out.println("shoots1  " + shots[1]);
+            System.out.println(hitRate[1]);
+            hitRateEnemy[1].setText(df.format(hitRate[1]) + "%");
+        }
+        if(shots[0] != 0) {
+            hitRate[0] = Double.valueOf(hits[0])/Double.valueOf(shots[0])*100;
+            System.out.println("hits0  "+ hits[0]);
+            System.out.println("shoots0  " + shots[0]);
+            System.out.println(hitRate[0]);
+            hitRateYou[1].setText(df.format(hitRate[0]) + "%");
+        }
+    }
+
+    private void increaseShots(int player, boolean hit) {
+        shots[player]++;
+        if(hit) hits[player]++;
+        updateStats();
     }
 
     public void setGameEnd(String winMessage, Color color) {

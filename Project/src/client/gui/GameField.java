@@ -83,6 +83,9 @@ public class GameField {
                             int shoot = client.shoot(finalI);
                             boolean hit = shoot != 0;
                             setGameComponentAsShot(player, finalI, hit);
+                            if(shoot == 3) {
+                                setGameEnd("Du hast gewonnen!", Color.GREEN);
+                            }
                         }
                     }
 
@@ -249,16 +252,10 @@ public class GameField {
         DecimalFormat df = new DecimalFormat("###.##");
         if(shots[1] != 0) {
             hitRate[1] = Double.valueOf(hits[1])/Double.valueOf(shots[1])*100;
-            System.out.println("hits1  "+ hits[1]);
-            System.out.println("shoots1  " + shots[1]);
-            System.out.println(hitRate[1]);
             hitRateEnemy[1].setText(df.format(hitRate[1]) + "%");
         }
         if(shots[0] != 0) {
             hitRate[0] = Double.valueOf(hits[0])/Double.valueOf(shots[0])*100;
-            System.out.println("hits0  "+ hits[0]);
-            System.out.println("shoots0  " + shots[0]);
-            System.out.println(hitRate[0]);
             hitRateYou[1].setText(df.format(hitRate[0]) + "%");
         }
     }
@@ -269,12 +266,13 @@ public class GameField {
         updateStats();
     }
 
-    public void setGameEnd(String winMessage, Color color) {
+    private void setGameEnd(String winMessage, Color color) {
         contentPane.removeAll();
         JLabel messageLabel = new JLabel(winMessage, SwingConstants.CENTER);
         messageLabel.setFont(new Font(messageLabel.getFont().getName(), messageLabel.getFont().getStyle(), 50));
         messageLabel.setForeground(color);
-        messageLabel.setBounds(300, 220, 424, 120);
+        messageLabel.setBounds(250, 220, 474, 120);
         contentPane.add(messageLabel);
+        contentPane.repaint();
     }
 }

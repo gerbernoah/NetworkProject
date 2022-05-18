@@ -90,7 +90,6 @@ public class Client implements ClientObs
     public void shot(int pos, boolean onTurn) throws RemoteException
     {
         setPlayerOnTurn(onTurn);
-        //Schiff an der Stelle pos wurde abgeschossen todo schiff löschen und umliegende felder als leer markieren
         gameField.setGameComponentAsShot(0, pos);
     }
 

@@ -25,7 +25,7 @@ public interface ServerObs extends Remote
     /**
      * @param name to associate with the client reference
      */
-    void clientAdded(String name) throws RemoteException;
+    boolean adClient(String name, ClientObs clientObs) throws RemoteException;
 
     void clientReady(String name) throws RemoteException;
 

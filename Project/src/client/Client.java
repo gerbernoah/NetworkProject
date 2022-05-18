@@ -47,9 +47,7 @@ public class Client implements ClientObs
                 System.out.println("server full");
                 return;
             }
-
-            registry.bind(regName, clientObs);
-            server.clientAdded(regName);
+            server.adClient(regName, clientObs);
 
         } catch (Exception e)
         {

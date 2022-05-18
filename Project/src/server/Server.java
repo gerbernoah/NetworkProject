@@ -4,6 +4,7 @@ import registry.ClientObs;
 import registry.ServerObs;
 
 import java.awt.*;
+import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -94,15 +95,18 @@ public class Server implements ServerObs
     }
 
     @Override
-    public void clientAdded(String name) throws RemoteException
+    public boolean adClient(String name, ClientObs clientObs) throws RemoteException
     {
         try
         {
-            clients.add( new UtilClient((ClientObs) registry.lookup(name), name));
-        } catch (NotBoundException e)
+            registry.bind(name, clientObs);
+            clients.add( new UtilClient(clientObs, name));
+        } catch (AlreadyBoundException e)
         {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     @Override

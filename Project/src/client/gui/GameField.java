@@ -8,9 +8,7 @@ import server.field.Ship;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
 public class GameField {
 
@@ -59,8 +57,8 @@ public class GameField {
         headerEnemy.setFont(new Font(Font.DIALOG, Font.BOLD, 25));
         setupGameFieldOnPanel(0);
         setupGameFieldOnPanel(1);
-        setupChat();
         setupStats();
+        setupChat();
     }
 
     private void setupGameFieldOnPanel(int player) {
@@ -104,6 +102,7 @@ public class GameField {
     }
 
     private void setupChat() {
+
         contentPane.add(chatField);
         contentPane.add(sendMessage);
         contentPane.add(scrollPane);
@@ -115,18 +114,34 @@ public class GameField {
         chatArea.setBorder(new LineBorder(Color.black));
         chatField.setBounds(50, 210, 774, 40);
         sendMessage.setBounds(834, 210, 140, 40);
+        chatField.requestFocus();
 
         sendMessage.addMouseListener(new MouseAdapter()
         {
             @Override
             public void mouseClicked(MouseEvent e)
             {
-                String message = chatField.getText();
-                client.sendMessage(message);
-                chatField.setText("");
-                chatArea.append("You: " + message + "\n");
+                sendMessage();
             }
         });
+
+        chatField.addKeyListener(new KeyAdapter()
+        {
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                if (e.getKeyChar() == KeyEvent.VK_ENTER)
+                    sendMessage();
+            }
+        });
+    }
+
+    private void sendMessage()
+    {
+        String message = chatField.getText();
+        client.sendMessage(message);
+        chatField.setText("");
+        chatArea.append("You: " + message + "\n");
     }
 
     public void messageReceived(String message)

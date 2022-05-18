@@ -216,6 +216,11 @@ public class PlaceField {
         readyButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                for (Ship ship : ships)
+                {
+                    if (!ship.placed())
+                        return;
+                }
                 Client client = new Client(jFrame, enterIpField.getText());
                 client.setShips(ships);
                 Point[] points = new Point[ships.length];

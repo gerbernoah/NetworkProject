@@ -2,6 +2,7 @@ package client.gui;
 
 import client.Client;
 import client.gui.components.GameLabel;
+import client.gui.components.HintTextField;
 import client.gui.components.ShipPlaceLabel;
 import server.field.Ship;
 
@@ -28,6 +29,8 @@ public class PlaceField {
     private Ship[] ships = new Ship[5];
     private Ship[] tempShips = new Ship[5];
     private int multiplier = 1;
+
+    private JTextField enterIpField = new HintTextField("Verbindungsadresse eingeben");
 
     private int selectedShip = 11;
 
@@ -204,6 +207,8 @@ public class PlaceField {
     }
 
     private void setupButtons() {
+        enterIpField.setBounds(740, 500, 200, 50);
+        contentPane.add(enterIpField);
         readyButton.setBounds(740, 550, 200, 50);
         readyButton.setBorder(new LineBorder(Color.BLACK));
         readyButton.setBackground(Color.lightGray);
@@ -212,7 +217,6 @@ public class PlaceField {
         readyButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("placed listener");
                 client.setShips(ships);
                 Point[] points = new Point[ships.length];
                 for (int i = 0; i < ships.length; i++)

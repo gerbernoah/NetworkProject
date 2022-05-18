@@ -44,7 +44,7 @@ public class Server implements ServerObs
      * @param pos the position shot
      * @param onTurn if the client is on Turn after shot
      */
-    public void shot(UtilClient pClient, int pos, boolean onTurn)
+    public void shot(UtilClient pClient, int pos, int onTurn)
     {
         for (UtilClient client : clients)
         {

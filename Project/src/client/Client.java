@@ -87,9 +87,11 @@ public class Client implements ClientObs
     }
 
     @Override
-    public void shot(int pos, boolean onTurn) throws RemoteException
+    public void shot(int pos, int onTurn) throws RemoteException
     {
-        setPlayerOnTurn(onTurn);
+        if (onTurn == 3)
+            /*todo endGame*/;
+        setPlayerOnTurn(onTurn > 0);
         gameField.setGameComponentAsShot(0, pos);
     }
 

@@ -31,16 +31,23 @@ public class Controller
             player0OnTurn = !player0OnTurn;
 
         clField.setUnit(pos, true);
-        server.shot(client, pos, !anyShip);
 
+        int onTurn = 3;
         if (!anyShip)
-            return 0;
-        if (clField.getAliveUnits(clField.getShipOn(pos)) > 0)
-            return 1;
-        for (Ship ship1 : clField.getShips())
-            if (clField.getAliveUnits(ship1) > 0)
-                return 2;
-        return 3;
+            onTurn = 0;
+        else if (clField.getAliveUnits(clField.getShipOn(pos)) > 0)
+            onTurn = 1;
+        else
+        {
+            for (Ship ship1 : clField.getShips())
+                if (clField.getAliveUnits(ship1) > 0)
+                {
+                    onTurn = 2;
+                    break;
+                }
+        }
+        server.shot(client, pos, onTurn);
+        return onTurn;
     }
 
     public boolean placeShips(UtilClient client, Point[] ships)

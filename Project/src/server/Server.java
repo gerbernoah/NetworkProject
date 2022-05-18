@@ -30,7 +30,7 @@ public class Server implements ServerObs
             ServerObs serverObs = (ServerObs) UnicastRemoteObject.exportObject(this, 0);
             registry.bind("s", serverObs);
 
-            System.out.println("running");
+            System.out.println("running on " + Registry.REGISTRY_PORT);
 
         } catch (Exception e)
         {

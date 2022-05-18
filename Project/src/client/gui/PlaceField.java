@@ -13,6 +13,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.registry.Registry;
+import java.util.Arrays;
 
 public class PlaceField {
 
@@ -218,10 +220,20 @@ public class PlaceField {
             public void mouseClicked(MouseEvent e) {
                 for (Ship ship : ships)
                 {
-                    if (!ship.placed())
-                        return;
+                    if (!ship.placed());
                 }
-                Client client = new Client(jFrame, enterIpField.getText());
+
+                String[] input = enterIpField.getText().split(":");
+                System.out.println(Arrays.toString(input));
+                int port = Registry.REGISTRY_PORT;
+                String host = "";
+                if (input.length > 0)
+                    host = input[0];
+                if (input.length > 1)
+                    port = Integer.parseInt(input[1]);
+                System.out.println(host +":"+ port);
+                Client client = new Client(jFrame, host, port);
+
                 client.setShips(ships);
                 Point[] points = new Point[ships.length];
                 for (int i = 0; i < ships.length; i++)

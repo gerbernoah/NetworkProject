@@ -1,0 +1,1 @@
+java -jar Server_jar/Project.jar

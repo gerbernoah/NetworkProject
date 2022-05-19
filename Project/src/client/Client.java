@@ -96,7 +96,7 @@ public class Client implements ClientObs
     {
         if (onTurn == 3)
             gameField.setGameEnd(false);
-        setPlayerOnTurn(onTurn > 0);
+        setPlayerOnTurn(onTurn == 0);
         gameField.setGameComponentAsShot(0, pos);
     }
 

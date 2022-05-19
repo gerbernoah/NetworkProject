@@ -43,19 +43,28 @@ public class PlaceField {
         setupPlaceField();
         setupShipField();
         setupButtons();
-        contentPane.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                if(e.getKeyChar() == 'r') {
-                    if(multiplier == 1) {
-                        multiplier = 10;
-                    } else if(multiplier == 10) {
-                        multiplier = 1;
+
+        for (GameLabel gameComponent : gameComponents)
+        {
+            gamePanel.addMouseListener(new MouseAdapter()
+            {
+                @Override
+                public void mouseClicked(MouseEvent e)
+                {
+                    if (e.getButton() == MouseEvent.BUTTON3)
+                    {
+                        if (multiplier == 1)
+                        {
+                            multiplier = 10;
+                        } else if (multiplier == 10)
+                        {
+                            multiplier = 1;
+                        }
+                        contentPane.revalidate();
                     }
-                    contentPane.revalidate();
                 }
-            }
-        });
+            });
+        }
         contentPane.requestFocus();
         for(int i = 0; i < 5; i++) {
             tempShips[i] = new Ship();
@@ -79,8 +88,9 @@ public class PlaceField {
             gameComponents[i].addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    if(selectedShip != 11) {
+                    if(selectedShip != 11 && e.getButton() == MouseEvent.BUTTON1) {
                         Ship ship = tempShips[selectedShip];
+
                         boolean possible = true;
                         for(int i : ship.getPositions()) {
                             if (gameComponents[i].isShip() || !gameComponents[i].isPlaceable())
@@ -110,6 +120,14 @@ public class PlaceField {
 
                             selectedShip = 11;
                         }
+                    }
+                    if(e.getButton() == MouseEvent.BUTTON3) {
+                        if(multiplier == 1) {
+                            multiplier = 10;
+                        } else if(multiplier == 10) {
+                            multiplier = 1;
+                        }
+                        contentPane.revalidate();
                     }
                 }
 
@@ -219,7 +237,8 @@ public class PlaceField {
             public void mouseClicked(MouseEvent e) {
                 for (Ship ship : ships)
                 {
-                    if (!ship.placed());
+                    if (!ship.placed())
+                        return;
                 }
 
                 String[] input = enterIpField.getText().split(":");

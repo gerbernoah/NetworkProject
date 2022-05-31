@@ -1,6 +1,7 @@
 package client.gui;
 
 import client.Client;
+import client.RmiClient;
 import client.gui.components.GameLabel;
 import client.gui.components.HintTextField;
 import client.gui.components.ShipPlaceLabel;
@@ -9,12 +10,9 @@ import server.field.Ship;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.rmi.registry.Registry;
-import java.util.Arrays;
 
 public class PlaceField {
 
@@ -248,7 +246,7 @@ public class PlaceField {
                     host = input[0];
                 if (input.length > 1)
                     port = Integer.parseInt(input[1]);
-                Client client = new Client(jFrame, host, port);
+                Client client = new RmiClient(jFrame, host, port);
 
                 client.setShips(ships);
                 Point[] points = new Point[ships.length];

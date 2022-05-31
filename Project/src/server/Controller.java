@@ -2,6 +2,7 @@ package server;
 
 import server.field.Field;
 import server.field.Ship;
+import server.rmi.RmiServer;
 
 import java.awt.*;
 
@@ -10,7 +11,7 @@ public class Controller
     private boolean player0OnTurn;
     private final Server server;
 
-    public Controller(Server server)
+    public Controller(RmiServer server)
     {
         player0OnTurn = true;
         this.server = server;

@@ -8,7 +8,7 @@ public interface Client
 {
     boolean placeShips(Point[] ships);
     int shoot(int pos);
-    public void sendMessage(String message);
+    void sendMessage(String message);
     boolean isPlayerOnTurn();
     void setShips(Ship[] ships);
 

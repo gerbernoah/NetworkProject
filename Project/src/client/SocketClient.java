@@ -73,11 +73,6 @@ public class SocketClient implements Client
         return true;
     }
 
-    public void disconnect()
-    {
-        addLenAndSendMessage(new byte[]{CommandValues.SHUTDOWN});
-    }
-
     private void shutdown()
     {
         running = false;

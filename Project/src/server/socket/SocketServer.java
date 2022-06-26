@@ -16,6 +16,7 @@ public class SocketServer implements Server
     private final ArrayList<ClientHandler> clientHandlers;
     private final Controller controller;
 
+    private boolean gameStarted = false;
     public SocketServer(int port)
     {
         controller = new Controller(this);
@@ -88,6 +89,9 @@ public class SocketServer implements Server
 
     public void clientReady(ClientHandler pClient) //called from client
     {
+        if (gameStarted)
+            return;
+
         boolean allReady = true;
         for (ClientHandler client : clientHandlers)
         {
@@ -98,7 +102,10 @@ public class SocketServer implements Server
         }
 
         if (allReady)
+        {
             clientHandlers.forEach(ClientHandler::gameStart);
+            gameStarted = true;
+        }
     }
 
     public void messageReceived(ClientHandler pClient, String message) //called from client

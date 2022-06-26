@@ -23,6 +23,7 @@ public class SocketClient implements Client
     private GameField gameField;
     private final JFrame jFrame;
     private Ship[] ships;
+    private volatile int hit, shipPlacementValid, playerTurn;
 
     public SocketClient(JFrame jFrame, String host, int port)
     {
@@ -43,6 +44,7 @@ public class SocketClient implements Client
                 if (inputStream.available() > 0)
                 {
                     byte[] msg = getMessage();
+                    System.out.println(Arrays.toString(msg));
                     switch (msg[0])
                     {
                         case CommandValues.SHUTDOWN:
@@ -59,6 +61,20 @@ public class SocketClient implements Client
 
                         case CommandValues.MSG:
                             messageReceived(String.valueOf(msg[1]));
+                            break;
+                        case CommandValues.RETURN:
+                            switch (msg[1])
+                            {
+                                case CommandValues.SHOOT:
+                                    hit = msg[2];
+                                    break;
+                                case CommandValues.PLACESHIPS:
+                                    shipPlacementValid = msg[2];
+                                    break;
+                                case CommandValues.REGCLIENT:
+                                    playerTurn = msg[2];
+                                    break;
+                            }
                             break;
                     }
                 }
@@ -102,9 +118,15 @@ public class SocketClient implements Client
         {
             server.connect(socketAddress);
             connected = true;
-            addLenAndSendMessage(new byte[]{CommandValues.REGCLIENT});
-            playerOnTurn = getMessage()[2] == 1;
             new Thread(this::run).start();
+
+            addLenAndSendMessage(new byte[]{CommandValues.REGCLIENT});
+            playerTurn = -1;
+            while (playerTurn == -1)
+            {
+                System.out.println(playerTurn);
+            };
+            playerOnTurn = playerTurn == 1;
         } catch (IOException e)
         {
             e.printStackTrace();
@@ -194,7 +216,9 @@ public class SocketClient implements Client
         addLenAndSendMessage(new byte[]{CommandValues.CLREADY});
         addLenAndSendMessage(new byte[]{CommandValues.PLACESHIPS}, byteShips);
 
-        return true;        //todo check return of PlaceShips
+        shipPlacementValid = -1;
+        while (shipPlacementValid == -1);
+        return shipPlacementValid == 1;
     }
 
     /**
@@ -204,17 +228,11 @@ public class SocketClient implements Client
     @Override
     public int shoot(int pos)       //called from game field
     {
-        try
-        {
-            addLenAndSendMessage(new byte[]{CommandValues.SHOOT, Integer.valueOf(pos).byteValue()});
-            int hit = getMessage()[2];
-            setPlayerOnTurn(hit > 0);
-            return hit;
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        return -1;
+        addLenAndSendMessage(new byte[]{CommandValues.SHOOT, Integer.valueOf(pos).byteValue()});
+        hit = -1;
+        while (hit == -1);
+        setPlayerOnTurn(hit > 0);
+        return hit;
     }
 
     @Override

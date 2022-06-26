@@ -34,7 +34,7 @@ public class ClientHandler extends UtilClient
                 if (inputStream.available() > 0)
                 {
                     byte[] message = getMessage();
-
+                    System.out.println(Arrays.toString(message));
                     switch (message[0])
                     {
                         case CommandValues.SHUTDOWN:
@@ -42,8 +42,7 @@ public class ClientHandler extends UtilClient
                             break;
 
                         case CommandValues.REGCLIENT:
-                            System.out.println(Arrays.toString(message));
-                            addLenAndSendMessage(new byte[]{CommandValues.RETURN, CommandValues.CLREADY, Integer.valueOf(getId()).byteValue()});
+                            addLenAndSendMessage(new byte[]{CommandValues.RETURN, CommandValues.REGCLIENT, Integer.valueOf(getId()).byteValue()});
                             break;
 
                         case CommandValues.SHOOT:
@@ -60,7 +59,8 @@ public class ClientHandler extends UtilClient
                             break;
 
                         case CommandValues.CLREADY:
-                            server.clientReady(this);
+                            //server.clientReady(this);
+                            gameStart();
                             break;
 
                     }

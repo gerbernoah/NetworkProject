@@ -1,15 +1,16 @@
 package server.socket;
 
-import server.Server;
 import server.UtilClient;
 import shared.socket.CommandValues;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
-public class ClientHandler implements Server
+public class ClientHandler extends UtilClient
 {
     private final SocketServer server;
     private final Socket socket;
@@ -17,6 +18,7 @@ public class ClientHandler implements Server
 
     public ClientHandler(SocketServer server, Socket socket)
     {
+        super();
         this.server = server;
         this.socket = socket;
         online = true;
@@ -35,6 +37,31 @@ public class ClientHandler implements Server
 
                     switch (message[0])
                     {
+                        case CommandValues.SHUTDOWN:
+                            closeConnection();
+                            break;
+
+                        case CommandValues.REGCLIENT:
+                            System.out.println(Arrays.toString(message));
+                            addLenAndSendMessage(new byte[]{CommandValues.RETURN, CommandValues.CLREADY, Integer.valueOf(getId()).byteValue()});
+                            break;
+
+                        case CommandValues.SHOOT:
+                            int hit = server.shoot(this, Byte.valueOf(message[1]).intValue());
+                            addLenAndSendMessage(new byte[]{CommandValues.RETURN, CommandValues.SHOOT, Integer.valueOf(hit).byteValue()});
+                            break;
+
+                        case CommandValues.PLACESHIPS:
+                            placeShips(Arrays.copyOfRange(message, 1, message.length));
+                            break;
+
+                        case CommandValues.MSG:
+                            server.messageReceived(this, Arrays.toString(message));
+                            break;
+
+                        case CommandValues.CLREADY:
+                            server.clientReady(this);
+                            break;
 
                     }
                 }
@@ -44,6 +71,36 @@ public class ClientHandler implements Server
             e.printStackTrace();
             closeConnection();
         }
+    }
+
+    public void shot(int pos, int onTurn)   //called from server
+    {
+        addLenAndSendMessage(new byte[]{
+                        CommandValues.SHOT,
+                        Integer.valueOf(pos).byteValue(),
+                        Integer.valueOf(onTurn).byteValue()
+        });
+    }
+
+    private void placeShips(byte[] byteShips)    //called from client
+    {
+        Point[] ships = new Point[byteShips.length/2];
+        for (int i = 0; i < byteShips.length - 1; i+=2)
+        {
+            ships[i / 2] = new Point(byteShips[i], byteShips[i + 1]);
+        }
+        boolean valid = server.placeShips(this, ships); //returns if placement was valid
+        addLenAndSendMessage(new byte[]{CommandValues.RETURN, CommandValues.PLACESHIPS, Integer.valueOf(valid ? 1 : 0).byteValue()});
+    }
+
+    public void gameStart()      //called from server
+    {
+        addLenAndSendMessage(new byte[]{CommandValues.GAMESTART});
+    }
+
+    public void msgToClient(String message)      //called from server
+    {
+        addLenAndSendMessage(new byte[]{CommandValues.MSG}, message.getBytes());
     }
 
     private byte[] getMessage() throws IOException
@@ -80,22 +137,27 @@ public class ClientHandler implements Server
         }
     }
 
-    public void addLenAndSendMessage(byte[] message)
+    public void addLenAndSendMessage(byte[]... messages)
     {
         try
         {
-            byte[] len = ByteBuffer.allocate(4).putInt(message.length).array();
-            byte[] out = ByteBuffer.allocate(len.length + message.length).put(len).put(message).array();
+            int size = 0;
+            for (byte[] message : messages)
+                size += message.length;
+            byte[] len = ByteBuffer.allocate(4).putInt(size).array();
+            ByteBuffer outBuffer = ByteBuffer.allocate(len.length + size).put(len);
+            for (byte[] message : messages)
+                outBuffer.put(message);
+            byte[] out = outBuffer.array();
 
             socket.getOutputStream().write(out);
         } catch (IOException e)
         {
             System.out.println("Could not send Message to " + socket.getInetAddress().getHostName());
-            closeConnection();
         }
     }
 
-    public void shutdown()
+    public void shutdown()  //shutdown the client
     {
         addLenAndSendMessage(new byte[]{CommandValues.SHUTDOWN});
         closeConnection();
@@ -106,7 +168,7 @@ public class ClientHandler implements Server
         if (!online)
         {
             System.out.println("Already disconnected from " + socket.getInetAddress().getHostName());
-            return;y
+            return;
         }
         online = false;
         try
@@ -118,11 +180,5 @@ public class ClientHandler implements Server
             e.printStackTrace();
             System.out.println("Could not close " + socket.getInetAddress().getHostName());
         }
-    }
-
-    @Override
-    public void shot(UtilClient pClient, int pos, int onTurn)
-    {
-
     }
 }

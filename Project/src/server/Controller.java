@@ -2,7 +2,6 @@ package server;
 
 import server.field.Field;
 import server.field.Ship;
-import server.rmi.RmiServer;
 
 import java.awt.*;
 
@@ -11,13 +10,13 @@ public class Controller
     private boolean player0OnTurn;
     private final Server server;
 
-    public Controller(RmiServer server)
+    public Controller(Server server)
     {
         player0OnTurn = true;
         this.server = server;
     }
 
-    public int shoot(UtilClient client, int pos, UtilClient destClient)
+    public int shoot(UtilClient client, int pos, UtilClient destClient) //called from server
     {
         if (player0OnTurn == (client.getId() == 0))
         {
@@ -51,7 +50,7 @@ public class Controller
         return onTurn;
     }
 
-    public boolean placeShips(UtilClient client, Point[] ships)
+    public boolean placeShips(UtilClient client, Point[] ships) //called from server
     {
         for (Point ship : ships)
         {

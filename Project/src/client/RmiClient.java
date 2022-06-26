@@ -60,7 +60,7 @@ public class RmiClient implements ClientObs, Client
      * @return if placement was correct
      */
     @Override
-    public boolean placeShips(Point[] ships)
+    public boolean placeShips(Point[] ships)        //called from gamefield
     {
         try
         {
@@ -79,7 +79,7 @@ public class RmiClient implements ClientObs, Client
      * @return if shot was hit; 0 = no hit; 1 = hit; 2 = hit + ship destroyed; 3 = hit + all ships destroyed;
      */
     @Override
-    public int shoot(int pos)
+    public int shoot(int pos)       //called from gamefield
     {
         try
         {
@@ -99,7 +99,7 @@ public class RmiClient implements ClientObs, Client
      * @throws RemoteException
      */
     @Override
-    public void shot(int pos, int onTurn) throws RemoteException
+    public void shot(int pos, int onTurn) throws RemoteException    //called from server
     {
         if (onTurn == 3)
             gameField.setGameEnd(false);
@@ -108,7 +108,7 @@ public class RmiClient implements ClientObs, Client
     }
 
     @Override
-    public void gameStart() throws RemoteException
+    public void gameStart() throws RemoteException      //called from server
     {
         this.gameField = new GameField(jFrame.getContentPane(),this);
         this.gameField.setupShips(ships);
@@ -116,13 +116,13 @@ public class RmiClient implements ClientObs, Client
     }
 
     @Override
-    public void messageReceived(String message) throws RemoteException
+    public void messageReceived(String message) throws RemoteException      //called from server
     {
         gameField.messageReceived(message);
     }
 
     @Override
-    public void sendMessage(String message)
+    public void sendMessage(String message)     //called from gamefield
     {
         try
         {

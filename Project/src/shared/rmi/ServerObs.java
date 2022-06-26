@@ -1,7 +1,5 @@
 package shared.rmi;
 
-import shared.rmi.ClientObs;
-
 import java.awt.*;
 import java.rmi.Remote;
 import java.rmi.RemoteException;

@@ -47,7 +47,7 @@ public class RmiServer implements ServerObs, Server
      * @param onTurn if the client is on Turn after shot
      */
     @Override
-    public void shot(UtilClient pClient, int pos, int onTurn)
+    public void shot(UtilClient pClient, int pos, int onTurn)   //called from controller
     {
         for (RmiUtilClient client : clients)
         {
@@ -64,7 +64,7 @@ public class RmiServer implements ServerObs, Server
     }
 
     @Override
-    public int shoot(String name, int pos) throws RemoteException
+    public int shoot(String name, int pos) throws RemoteException   //called from client
     {
         RmiUtilClient dstClient = null;
         for (RmiUtilClient client : clients)
@@ -86,7 +86,7 @@ public class RmiServer implements ServerObs, Server
     }
 
     @Override
-    public boolean placeShips(String name, Point[] ships) throws RemoteException
+    public boolean placeShips(String name, Point[] ships) throws RemoteException    //called from client
     {
         for (RmiUtilClient client : clients)
         {
@@ -98,7 +98,7 @@ public class RmiServer implements ServerObs, Server
     }
 
     @Override
-    public boolean addClient(String name, ClientObs clientObs) throws RemoteException
+    public boolean addClient(String name, ClientObs clientObs) throws RemoteException   //called from client
     {
         try
         {
@@ -113,7 +113,7 @@ public class RmiServer implements ServerObs, Server
     }
 
     @Override
-    public void clientReady(String name) throws RemoteException
+    public void clientReady(String name) throws RemoteException //called from client
     {
         boolean allReady = true;
         for (RmiUtilClient client : clients)
@@ -138,7 +138,7 @@ public class RmiServer implements ServerObs, Server
     }
 
     @Override
-    public void messageReceived(String name, String message) throws RemoteException
+    public void messageReceived(String name, String message) throws RemoteException //called from client
     {
         for (RmiUtilClient client : clients)
         {

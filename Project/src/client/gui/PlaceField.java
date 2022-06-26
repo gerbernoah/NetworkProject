@@ -1,7 +1,7 @@
 package client.gui;
 
 import client.Client;
-import client.RmiClient;
+import client.SocketClient;
 import client.gui.components.GameLabel;
 import client.gui.components.HintTextField;
 import client.gui.components.ShipPlaceLabel;
@@ -233,10 +233,13 @@ public class PlaceField {
         readyButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                for (Ship ship : ships)
+                if(false)
                 {
-                    if (!ship.placed())
-                        return;
+                    for (Ship ship : ships)
+                    {
+                        if (!ship.placed())
+                            return;
+                    }
                 }
 
                 String[] input = enterIpField.getText().split(":");
@@ -246,7 +249,7 @@ public class PlaceField {
                     host = input[0];
                 if (input.length > 1)
                     port = Integer.parseInt(input[1]);
-                Client client = new RmiClient(jFrame, host, port);
+                Client client = new SocketClient(jFrame, host, port);   //todo "SocketClient" and "RMIClient" available
 
                 client.setShips(ships);
                 Point[] points = new Point[ships.length];
@@ -254,7 +257,7 @@ public class PlaceField {
                 {
                     points[i] = new Point(ships[i].getStartPos(), ships[i].getEndPos());
                 }
-                client.placeShips(points);
+                System.out.println(client.placeShips(points));
             }
 
             @Override
